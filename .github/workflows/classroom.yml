@@ -1,0 +1,33 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Coding Style
+      id: coding-style
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Coding Style
+        setup-command: ''
+        command: "./pylint MessageBox.py"
+        timeout: 10
+        max-score: 10
+    - name: test_send_valid_message
+      id: test_send_valid_message
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: test_send_valid_message
+        setup-command: ''
+        command: "python -m unittest test_messagebox.TestMessageBox.test_send_valid_message"
+        timeout: 10
+        max-score: 10
