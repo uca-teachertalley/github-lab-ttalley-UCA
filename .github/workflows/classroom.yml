@@ -13,13 +13,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        pip install pylint
     - name: Coding Style
       id: coding-style
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Coding Style
         setup-command: ''
-        command: "./pylint MessageBox.py"
+        command: "pylint *.py"
         timeout: 10
         max-score: 10
     - name: test_send_valid_message
@@ -31,3 +34,11 @@ jobs:
         command: "python -m unittest test_messagebox.TestMessageBox.test_send_valid_message"
         timeout: 10
         max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        AUTOTEST-SETUP_RESULTS: "${{steps.autotest-setup.outputs.result}}"
+        CODING-STYLE_RESULTS: "${{steps.coding-style.outputs.result}}"
+        TEST_SEND_VALID_MESSAGE_RESULTS: "${{steps.test_send_valid_message.outputs.result}}"
+      with:
+        runners: coding-style,test_send_valid_message
