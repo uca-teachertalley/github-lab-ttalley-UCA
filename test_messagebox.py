@@ -1,10 +1,9 @@
-
 """
 Unit tests for the MessageBox class.
 """
 
 import unittest
-from MessageBox import MessageBox, DEFAULT_SIZE
+from messagebox import MessageBox, DEFAULT_SIZE
 
 # pylint: disable=too-many-public-methods
 class TestMessageBox(unittest.TestCase):
